@@ -1,0 +1,94 @@
+Get Started with Notebooks in Azure Machine Learning[¶](#Get-Started-with-Notebooks-in-Azure-Machine-Learning) {#Get-Started-with-Notebooks-in-Azure-Machine-Learning}
+==============================================================================================================
+
+Azure Machine Learning is a cloud-based service for creating and
+managing machine learning solutions. It's designed to help data
+scientists and machine learning engineers leverage their existing data
+processing and model development skills and frameworks, and scale their
+workloads to the cloud.
+
+A lot of data science and machine learning work is accomplished in
+notebooks like this one. Notebooks consist of *cells*, some of which
+(like the one containing this text) are used for notes, graphics, and
+other content usually written using *markdown*; while others (like the
+cell below this one) contain code that you can run interactively within
+the notebook.
+
+The Azure Machine Learning Python SDK[¶](#The-Azure-Machine-Learning-Python-SDK) {#The-Azure-Machine-Learning-Python-SDK}
+--------------------------------------------------------------------------------
+
+You can run pretty much any Python code in a notebook, provided the
+required Python packages are installed in the environment where you're
+running it. In this case, you're running the notebook in a *Conda*
+environment on an Azure Machine Learning compute instance. This
+environment is installed in the compute instance by default, and
+contains common Python packages that data scientists typically work
+with. It also includes the Azure Machine Learning Python SDK, which is a
+Python package that enables you to write code that uses resources in
+your Azure Machine Learning workspace.
+
+Run the cell below to import the **azureml-core** package and checking
+the version of the SDK that is installed.
+
+In [1]:
+
+    import azureml.core
+
+    print("Ready to use Azure ML", azureml.core.VERSION)
+
+    Ready to use Azure ML 1.34.0
+
+Connect to your workspace[¶](#Connect-to-your-workspace) {#Connect-to-your-workspace}
+--------------------------------------------------------
+
+All experiments and associated resources are managed within your Azure
+Machine Learning workspace. You can connect to an existing workspace, or
+create a new one using the Azure Machine Learning SDK.
+
+In most cases, you should store workspace connection information in a
+JSON configuration file. This makes it easier to connect without needing
+to remember details like your Azure subscription ID. You can download
+the JSON configuration file from the blade for your workspace in the
+Azure portal or from the workspace details pane in Azure Machine
+Learning studio, but if you're using a compute instance within your
+workspace, the configuration file has already been downloaded to the
+root folder.
+
+The code below uses the configuration file to connect to your workspace.
+
+> **Note**: The first time you connect to your workspace in a notebook
+> session, you may be prompted to sign into Azure by clicking the
+> `https://microsoft.com/devicelogin` link, entering an automatically
+> generated code, and signing into Azure. After you have successfully
+> signed in, you can close the browser tab that was opened and return to
+> this notebook.
+
+In [2]:
+
+    from azureml.core import Workspace
+
+    ws = Workspace.from_config()
+    print(ws.name, "loaded")
+
+    uc_dp100 loaded
+
+View Azure Machine Learning resources in the workspace[¶](#View-Azure-Machine-Learning-resources-in-the-workspace) {#View-Azure-Machine-Learning-resources-in-the-workspace}
+------------------------------------------------------------------------------------------------------------------
+
+Now that you have a connection to your workspace, you can work with the
+resources. For example, you can use the following code to enumerate the
+compute resources in your workspace.
+
+In [3]:
+
+    print("Compute Resources:")
+    for compute_name in ws.compute_targets:
+        compute = ws.compute_targets[compute_name]
+        print("\t", compute.name, ':', compute.type)
+
+    Compute Resources:
+         UCDP100 : ComputeInstance
+         UCDP100Cluster : AmlCompute
+
+When you've finished exploring this notebook, you can save any changes
+you have made and close it.
